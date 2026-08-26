@@ -1,0 +1,60 @@
+@startuml
+
+abstract class Usuario {
+  - id: Long
+  - nombre: String
+  - email: String
+  + getNombre(): String
+  + getEmail(): String
+}
+
+class Estudiante {
+  - codigo: String
+  - carrera: String
+}
+
+class Docente {
+  - codigo: String
+  - especialidad: String
+}
+
+class HorarioTutoria {
+  - id: Long
+  - fecha: String
+  - hora: String
+  - disponible: boolean
+  + estaDisponible(): boolean
+  + reservar(): void
+  + liberar(): void
+}
+
+class Reserva {
+  - id: Long
+  - estudiante: Estudiante
+  - horario: HorarioTutoria
+  - estado: String
+  + cancelar(): void
+}
+
+class ServicioReservas {
+  + crearReserva(estudiante: Estudiante, horario: HorarioTutoria): Reserva
+}
+
+interface RepositorioReservas {
+  + guardar(reserva: Reserva): void
+}
+
+interface Notificador {
+  + enviar(destinatario: String, mensaje: String): void
+}
+
+Usuario <|-- Estudiante
+Usuario <|-- Docente
+
+Estudiante "1" -- "0..*" Reserva
+HorarioTutoria "1" -- "0..1" Reserva
+
+ServicioReservas ..> RepositorioReservas
+ServicioReservas ..> Notificador
+
+@enduml
