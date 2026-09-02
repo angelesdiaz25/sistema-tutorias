@@ -1,0 +1,41 @@
+@startuml
+title Builder - Construccion de Reserva
+
+class Reserva {
+  - id: Long
+  - estudiante: Estudiante
+  - horario: HorarioTutoria
+  - estado: String
+  - modalidad: String
+  - observaciones: String
+  - enlaceVirtual: String
+  - duracion: int
+}
+
+class ReservaBuilder {
+  - id: Long
+  - estudiante: Estudiante
+  - horario: HorarioTutoria
+  - modalidad: String
+  - observaciones: String
+  - enlaceVirtual: String
+  - duracion: int
+
+  + id(id: Long): ReservaBuilder
+  + estudiante(estudiante: Estudiante): ReservaBuilder
+  + horario(horario: HorarioTutoria): ReservaBuilder
+  + modalidad(modalidad: String): ReservaBuilder
+  + observaciones(observaciones: String): ReservaBuilder
+  + enlaceVirtual(enlace: String): ReservaBuilder
+  + duracion(duracion: int): ReservaBuilder
+  + build(): Reserva
+}
+
+class Estudiante
+class HorarioTutoria
+
+ReservaBuilder ..> Reserva : construye
+ReservaBuilder --> Estudiante
+ReservaBuilder --> HorarioTutoria
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+title Factory Method - Sistema de Gestion de Tutorias
+
+interface Notificador {
+  + enviar(destinatario: String, mensaje: String): void
+}
+
+class NotificadorEmail
+class NotificadorSMS
+class NotificadorPush
+class NotificadorWhatsApp
+
+abstract class NotificadorFactory {
+  + crearNotificador(): Notificador
+  + notificar(destinatario: String, mensaje: String): void
+}
+
+class EmailFactory
+class SMSFactory
+class PushFactory
+class WhatsAppFactory
+
+Notificador <|.. NotificadorEmail
+Notificador <|.. NotificadorSMS
+Notificador <|.. NotificadorPush
+Notificador <|.. NotificadorWhatsApp
+
+NotificadorFactory <|-- EmailFactory
+NotificadorFactory <|-- SMSFactory
+NotificadorFactory <|-- PushFactory
+NotificadorFactory <|-- WhatsAppFactory
+
+EmailFactory ..> NotificadorEmail : crea
+SMSFactory ..> NotificadorSMS : crea
+PushFactory ..> NotificadorPush : crea
+WhatsAppFactory ..> NotificadorWhatsApp : crea
+
+@enduml
