@@ -9,7 +9,7 @@ class NotificadorEmail
 class NotificadorSMS
 class NotificadorPush
 class NotificadorWhatsApp
-
+class NotificadorTeams
 abstract class NotificadorFactory {
   + crearNotificador(): Notificador
   + notificar(destinatario: String, mensaje: String): void
@@ -19,6 +19,7 @@ class EmailFactory
 class SMSFactory
 class PushFactory
 class WhatsAppFactory
+class TeamsFactory
 
 Notificador <|.. NotificadorEmail
 Notificador <|.. NotificadorSMS
@@ -34,5 +35,9 @@ EmailFactory ..> NotificadorEmail : crea
 SMSFactory ..> NotificadorSMS : crea
 PushFactory ..> NotificadorPush : crea
 WhatsAppFactory ..> NotificadorWhatsApp : crea
+
+Notificador <|.. NotificadorTeams
+NotificadorFactory <|-- TeamsFactory
+TeamsFactory ..> NotificadorTeams : crea
 
 @enduml

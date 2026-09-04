@@ -27,5 +27,13 @@ public class MainFactory {
                 "0999999999",
                 "Recordatorio de tutoría para mañana"
         );
+System.out.println();
+
+NotificadorFactory teamsFactory = new TeamsFactory();
+teamsFactory.notificar(
+        "angeles.diaz@uees.edu.ec",
+        "Su tutoría fue confirmada mediante Microsoft Teams"
+);
+
     }
 }
