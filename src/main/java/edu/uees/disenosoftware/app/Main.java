@@ -1,23 +1,43 @@
 package edu.uees.disenosoftware.app;
 
 import edu.uees.disenosoftware.adapter.ProveedorZoom;
-import edu.uees.disenosoftware.adapter.Videoconferencia;
 import edu.uees.disenosoftware.adapter.ZoomAdapter;
+import edu.uees.disenosoftware.domain.Docente;
+import edu.uees.disenosoftware.domain.Estudiante;
+import edu.uees.disenosoftware.domain.Reserva;
+import edu.uees.disenosoftware.facade.NotificadorConsola;
+import edu.uees.disenosoftware.facade.ServicioCalendario;
+import edu.uees.disenosoftware.facade.ServicioReservas;
+import edu.uees.disenosoftware.facade.TutoriasFacade;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("=== PATRÓN ADAPTER ===");
+        Estudiante estudiante = new Estudiante(
+                "Ángeles Díaz",
+                "angeles.diaz@uees.edu.ec"
+        );
 
-        ProveedorZoom zoom = new ProveedorZoom();
-        Videoconferencia video = new ZoomAdapter(zoom);
-
-        String enlace = video.crearSala(
-                "Tutoría Diseño de Software",
+        Docente docente = new Docente(
+                "Docente UEES",
                 "docente@uees.edu.ec"
         );
 
-        System.out.println("Enlace: " + enlace);
+        Reserva reserva = new Reserva(
+                "RES-001",
+                estudiante,
+                docente,
+                "Patrones Adapter y Facade"
+        );
+
+        TutoriasFacade facade = new TutoriasFacade(
+                new ServicioReservas(),
+                new ZoomAdapter(new ProveedorZoom()),
+                new ServicioCalendario(),
+                new NotificadorConsola()
+        );
+
+        facade.crearTutoriaVirtual(reserva);
     }
 }
