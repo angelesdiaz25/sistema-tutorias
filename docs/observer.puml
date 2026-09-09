@@ -1,0 +1,31 @@
+@startuml
+title Observer - Cambios de estado de Reserva
+
+interface ReservaObserver {
+    + actualizar(reserva: Reserva): void
+}
+
+class EmailObserver
+class CalendarioObserver
+class PanelEstudianteObserver
+class PanelDocenteObserver
+
+class Reserva {
+    - id: String
+    - estado: EstadoReserva
+    - observers: List<ReservaObserver>
+    + agregarObserver(observer: ReservaObserver): void
+    + eliminarObserver(observer: ReservaObserver): void
+    - notificar(): void
+    + confirmar(): void
+    + cancelar(): void
+}
+
+ReservaObserver <|.. EmailObserver
+ReservaObserver <|.. CalendarioObserver
+ReservaObserver <|.. PanelEstudianteObserver
+ReservaObserver <|.. PanelDocenteObserver
+
+Reserva "1" o-- "0..*" ReservaObserver
+
+@enduml

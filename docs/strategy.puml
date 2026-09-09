@@ -1,0 +1,39 @@
+@startuml
+title Strategy - Políticas de cancelación
+
+interface PoliticaCancelacion {
+    + puedeCancelar(reserva: Reserva): boolean
+}
+
+class CancelacionNormal
+class CancelacionPrioritaria
+class CancelacionGrupal
+class CancelacionEmergencia {
+    - emergenciaJustificada: boolean
+}
+
+class ServicioCancelacion {
+    - politica: PoliticaCancelacion
+    + cambiarPolitica(politica: PoliticaCancelacion): void
+    + cancelar(reserva: Reserva): void
+}
+
+class Reserva {
+    - id: String
+    - fechaHora: LocalDateTime
+    - estado: EstadoReserva
+    + horasRestantes(): long
+    + minutosRestantes(): long
+    + cancelar(): void
+}
+
+PoliticaCancelacion <|.. CancelacionNormal
+PoliticaCancelacion <|.. CancelacionPrioritaria
+PoliticaCancelacion <|.. CancelacionGrupal
+PoliticaCancelacion <|.. CancelacionEmergencia
+
+ServicioCancelacion --> PoliticaCancelacion
+ServicioCancelacion --> Reserva
+PoliticaCancelacion ..> Reserva
+
+@enduml

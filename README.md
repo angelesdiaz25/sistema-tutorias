@@ -109,3 +109,73 @@ Sin la interfaz `Videoconferencia`, `TutoriasFacade` y la clase principal depend
 ### Conclusión
 
 La actividad permitió comprender que Adapter y Facade son patrones estructurales con objetivos diferentes. Adapter integra proveedores con interfaces incompatibles sin afectar al resto del sistema, mientras que Facade coordina varios servicios mediante una operación sencilla. La incorporación de Microsoft Teams demostró que el sistema puede cambiar de proveedor sin modificar la Facade ni el contrato de videoconferencia.
+
+
+---
+
+## Actividad 3 - Strategy y Observer
+
+### Preguntas de análisis
+
+#### 1. ¿Qué parte es estable y qué parte es variable en Strategy?
+
+La parte estable es el proceso de cancelación realizado por
+`ServicioCancelacion`. La parte variable son las reglas que determinan si
+una reserva puede cancelarse. Estas reglas se encuentran separadas en
+`CancelacionNormal`, `CancelacionPrioritaria`, `CancelacionGrupal` y
+`CancelacionEmergencia`.
+
+#### 2. ¿Qué tendría que cambiar para agregar CancelacionGrupal?
+
+Solamente fue necesario crear una nueva clase que implementa la interfaz
+`PoliticaCancelacion`. No fue necesario modificar `ServicioCancelacion`.
+Esto favorece el principio abierto/cerrado, porque el sistema puede
+extenderse mediante nuevas estrategias sin alterar el código existente.
+
+#### 3. ¿Quién es Subject y quiénes son Observers?
+
+El Subject es la clase `Reserva`, porque mantiene la lista de observadores
+y les comunica sus cambios de estado. Los Observers son
+`EmailObserver`, `CalendarioObserver`, `PanelEstudianteObserver` y
+`PanelDocenteObserver`.
+
+#### 4. ¿Qué problema habría si un Observer lanza una excepción?
+
+Si un Observer lanza una excepción y esta no se controla, la ejecución del
+método `notificar()` puede detenerse. Como resultado, los observadores
+ubicados después del componente que falló podrían no recibir la
+notificación. Una solución sería controlar cada excepción por separado o
+utilizar un mecanismo de eventos asíncronos.
+
+#### 5. ¿Por qué Strategy y Observer son patrones de comportamiento, pero no resuelven el mismo problema?
+
+Ambos patrones organizan el comportamiento y la colaboración entre
+objetos. Strategy permite intercambiar algoritmos o políticas para
+realizar una operación. Observer permite que varios componentes reaccionen
+cuando otro objeto cambia. Strategy resuelve la variación de una regla,
+mientras que Observer resuelve la comunicación de eventos.
+
+### Relación con OCP y DIP
+
+Strategy favorece OCP porque permite agregar nuevas políticas sin
+modificar `ServicioCancelacion`. También favorece DIP porque el servicio
+depende de la abstracción `PoliticaCancelacion` y no de una política
+concreta.
+
+Observer favorece OCP porque permite agregar nuevos receptores sin
+modificar la lógica de `Reserva`. Además, favorece DIP porque `Reserva`
+depende de la abstracción `ReservaObserver` y no directamente de correo,
+calendario o paneles específicos.
+
+### Conclusiones
+
+En esta práctica se comprobó que Strategy permite separar las diferentes
+reglas de cancelación y cambiar la política utilizada durante la
+ejecución. De esta forma se evitan bloques condicionales extensos y se
+facilita la incorporación de nuevas reglas.
+
+También se aplicó Observer para notificar los cambios de estado de una
+reserva. El correo, el calendario y los paneles reaccionan de manera
+independiente, sin introducir sus responsabilidades dentro de `Reserva`.
+Los dos patrones mejoran la extensibilidad, reducen el acoplamiento y
+permiten mantener el sistema de tutorías de una forma más organizada.
