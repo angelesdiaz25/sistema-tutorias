@@ -7,6 +7,9 @@ import edu.uees.disenosoftware.actividad3.strategy.CancelacionEmergencia;
 import edu.uees.disenosoftware.actividad3.strategy.CancelacionGrupal;
 import edu.uees.disenosoftware.actividad3.strategy.CancelacionNormal;
 import edu.uees.disenosoftware.actividad3.strategy.ServicioCancelacion;
+import edu.uees.disenosoftware.actividad3.observer.PanelDocenteObserver;
+import edu.uees.disenosoftware.actividad3.observer.PanelEstudianteObserver;
+
 
 import java.time.LocalDateTime;
 
@@ -62,6 +65,7 @@ public class Main {
                 LocalDateTime.now().plusHours(5)
         );
 
+
         reservaObserver.agregarObserver(
                 new EmailObserver()
         );
@@ -69,6 +73,14 @@ public class Main {
         reservaObserver.agregarObserver(
                 new CalendarioObserver()
         );
+
+	reservaObserver.agregarObserver(
+        new PanelEstudianteObserver()
+);
+
+reservaObserver.agregarObserver(
+        new PanelDocenteObserver()
+);
 
         System.out.println(
                 "Estado inicial: "
