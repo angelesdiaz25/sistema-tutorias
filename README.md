@@ -12,8 +12,9 @@ Como continuación del diseño inicial del sistema, se aplicaron patrones de dis
 
 ## Tecnologías utilizadas
 
-- Java 17
+
 - Maven
+- Java 21
 - Git
 - GitHub
 - Ubuntu / WSL
@@ -50,6 +51,8 @@ src/main/java/edu/uees/tutorias/
 │   ├── EmailFactory.java
 │   ├── SMSFactory.java
 │   ├── PushFactory.java
+│   ├── NotificadorTeams.java
+│   ├── TeamsFactory.java
 │   ├── WhatsAppFactory.java
 │   └── MainFactory.java
 │
@@ -79,3 +82,30 @@ Factory Method aumenta la cantidad de clases, porque cada mecanismo de notificac
 Factory Method resuelve el problema de crear distintos mecanismos de notificación sin distribuir condicionales ni instanciaciones directas por todo el sistema. La variabilidad relacionada con la creación de objetos queda aislada en las fábricas concretas.
 
 Aunque el patrón requiere más clases, este costo está justificado porque permite agregar nuevas notificaciones, como Teams o WhatsApp, sin modificar las implementaciones existentes. De esta manera se reduce el acoplamiento y se facilita la evolución del sistema.
+
+
+## Actividad Semana 4: Adapter y Facade
+
+### 1. ¿Qué componente representa Target, Adapter y Adaptee?
+
+El Target es la interfaz `Videoconferencia`, porque define el contrato que utiliza el sistema para crear una sala virtual. Los Adapter son `ZoomAdapter` y `TeamsAdapter`, ya que convierten las operaciones externas al método `crearSala()`. Los Adaptee son `ProveedorZoom` y `MicrosoftTeamsAPI`, porque contienen las interfaces originales e incompatibles de cada proveedor.
+
+### 2. ¿Qué tendría que cambiar si se reemplaza Zoom por Teams?
+
+Solamente se debe cambiar la creación del adaptador en la clase principal. En lugar de usar `ZoomAdapter` con `ProveedorZoom`, se utiliza `TeamsAdapter` con `MicrosoftTeamsAPI`. No es necesario modificar la interfaz `Videoconferencia` ni la clase `TutoriasFacade`.
+
+### 3. ¿Por qué Facade no es lo mismo que Adapter?
+
+Adapter permite que dos interfaces incompatibles puedan trabajar juntas. Facade proporciona una interfaz sencilla para coordinar varios servicios y ocultar la complejidad del proceso. Adapter transforma una interfaz, mientras que Facade simplifica el acceso a un conjunto de componentes.
+
+### 4. ¿Qué código quedaría acoplado si elimináramos Videoconferencia?
+
+Sin la interfaz `Videoconferencia`, `TutoriasFacade` y la clase principal dependerían directamente de `ProveedorZoom` o `MicrosoftTeamsAPI`. Al cambiar de proveedor sería necesario modificar esas clases, aumentando el acoplamiento y dificultando el mantenimiento.
+
+### 5. ¿Qué riesgo aparece si TutoriasFacade empieza a validar todas las reglas de negocio?
+
+`TutoriasFacade` podría convertirse en una clase Dios con demasiadas responsabilidades. Esto reduciría su cohesión, dificultaría las pruebas y violaría el principio de responsabilidad única. La Facade debe coordinar servicios, mientras que las reglas del negocio deben mantenerse en las clases correspondientes.
+
+### Conclusión
+
+La actividad permitió comprender que Adapter y Facade son patrones estructurales con objetivos diferentes. Adapter integra proveedores con interfaces incompatibles sin afectar al resto del sistema, mientras que Facade coordina varios servicios mediante una operación sencilla. La incorporación de Microsoft Teams demostró que el sistema puede cambiar de proveedor sin modificar la Facade ni el contrato de videoconferencia.

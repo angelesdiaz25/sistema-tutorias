@@ -1,0 +1,22 @@
+@startuml
+title Adapter - Videoconferencias
+
+interface Videoconferencia {
+  + crearSala(titulo: String, correoDocente: String): String
+}
+
+class ProveedorZoom {
+  + generarMeeting(topic: String, hostEmail: String): String
+}
+
+class ZoomAdapter
+class MicrosoftTeamsAPI
+class TeamsAdapter
+
+Videoconferencia <|.. ZoomAdapter
+Videoconferencia <|.. TeamsAdapter
+
+ZoomAdapter --> ProveedorZoom : adapta
+TeamsAdapter --> MicrosoftTeamsAPI : adapta
+
+@enduml

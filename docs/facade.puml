@@ -1,0 +1,23 @@
+@startuml
+title Facade - Creacion de tutoria virtual
+
+class TutoriasFacade {
+  + crearTutoriaVirtual(reserva: Reserva): Reserva
+}
+
+class ServicioReservas
+class ServicioCalendario
+interface Notificador
+class NotificadorConsola
+interface Videoconferencia
+class Reserva
+
+Notificador <|.. NotificadorConsola
+
+TutoriasFacade --> ServicioReservas
+TutoriasFacade --> ServicioCalendario
+TutoriasFacade --> Notificador
+TutoriasFacade --> Videoconferencia
+TutoriasFacade --> Reserva
+
+@enduml
