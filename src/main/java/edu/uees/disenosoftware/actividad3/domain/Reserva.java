@@ -1,7 +1,11 @@
 package edu.uees.disenosoftware.actividad3.domain;
 
+import edu.uees.disenosoftware.actividad3.observer.ReservaObserver;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reserva {
 
@@ -9,9 +13,36 @@ public class Reserva {
     private final LocalDateTime fechaHora;
     private EstadoReserva estado = EstadoReserva.PENDIENTE;
 
+    private final List<ReservaObserver> observers =
+            new ArrayList<>();
+
     public Reserva(String id, LocalDateTime fechaHora) {
         this.id = id;
         this.fechaHora = fechaHora;
+    }
+
+    public void agregarObserver(ReservaObserver observer) {
+        observers.add(observer);
+    }
+
+    public void eliminarObserver(ReservaObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notificar() {
+        for (ReservaObserver observer : observers) {
+            observer.actualizar(this);
+        }
+    }
+
+    public void confirmar() {
+        estado = EstadoReserva.CONFIRMADA;
+        notificar();
+    }
+
+    public void cancelar() {
+        estado = EstadoReserva.CANCELADA;
+        notificar();
     }
 
     public long horasRestantes() {
@@ -20,17 +51,10 @@ public class Reserva {
         ).toHours();
     }
 
-public long minutosRestantes() {
-    return Duration.between(
-            LocalDateTime.now(), fechaHora
-    ).toMinutes();
-}
-    public void confirmar() {
-        estado = EstadoReserva.CONFIRMADA;
-    }
-
-    public void cancelar() {
-        estado = EstadoReserva.CANCELADA;
+    public long minutosRestantes() {
+        return Duration.between(
+                LocalDateTime.now(), fechaHora
+        ).toMinutes();
     }
 
     public String getId() {
