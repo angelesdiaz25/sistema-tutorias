@@ -1,6 +1,8 @@
 package edu.uees.disenosoftware.actividad3.app;
 
 import edu.uees.disenosoftware.actividad3.domain.Reserva;
+import edu.uees.disenosoftware.actividad3.strategy.CancelacionEmergencia;
+import edu.uees.disenosoftware.actividad3.strategy.CancelacionGrupal;
 import edu.uees.disenosoftware.actividad3.strategy.CancelacionNormal;
 import edu.uees.disenosoftware.actividad3.strategy.ServicioCancelacion;
 
@@ -12,24 +14,49 @@ public class Main {
 
         System.out.println("=== PRUEBA DEL PATRÓN STRATEGY ===");
 
-        Reserva reserva = new Reserva(
+        ServicioCancelacion servicio =
+                new ServicioCancelacion(new CancelacionNormal());
+
+        Reserva normal = new Reserva(
                 "R-001",
                 LocalDateTime.now().plusHours(5)
         );
 
-        System.out.println("Estado inicial: " + reserva.getEstado());
+        servicio.cancelar(normal);
+
         System.out.println(
-                "Horas restantes: " + reserva.horasRestantes()
+                "Cancelación normal: " + normal.getEstado()
         );
 
-        ServicioCancelacion servicio =
-                new ServicioCancelacion(new CancelacionNormal());
+        Reserva grupal = new Reserva(
+                "R-002",
+                LocalDateTime.now().plusHours(30)
+        );
 
-        servicio.cancelar(reserva);
+        servicio.cambiarPolitica(new CancelacionGrupal());
+        servicio.cancelar(grupal);
 
-        System.out.println("Estado final: " + reserva.getEstado());
         System.out.println(
-                "Cancelación realizada mediante CancelacionNormal"
+                "Cancelación grupal: " + grupal.getEstado()
+        );
+
+        Reserva emergencia = new Reserva(
+                "R-003",
+                LocalDateTime.now().plusMinutes(30)
+        );
+
+        servicio.cambiarPolitica(
+                new CancelacionEmergencia(true)
+        );
+        servicio.cancelar(emergencia);
+
+        System.out.println(
+                "Cancelación de emergencia: "
+                        + emergencia.getEstado()
+        );
+
+        System.out.println(
+                "Las políticas fueron intercambiadas sin modificar el servicio."
         );
     }
 }

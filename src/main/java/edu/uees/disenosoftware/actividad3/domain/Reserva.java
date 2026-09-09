@@ -20,6 +20,11 @@ public class Reserva {
         ).toHours();
     }
 
+public long minutosRestantes() {
+    return Duration.between(
+            LocalDateTime.now(), fechaHora
+    ).toMinutes();
+}
     public void confirmar() {
         estado = EstadoReserva.CONFIRMADA;
     }
