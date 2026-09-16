@@ -179,3 +179,29 @@ reserva. El correo, el calendario y los paneles reaccionan de manera
 independiente, sin introducir sus responsabilidades dentro de `Reserva`.
 Los dos patrones mejoran la extensibilidad, reducen el acoplamiento y
 permiten mantener el sistema de tutorías de una forma más organizada.
+
+
+
+## Ae4 - Kata de refactorización
+
+Se refactorizó el flujo de confirmación de reservas sin modificar su comportamiento observable.
+
+### Casos verificados
+
+- Reserva válida con 5 horas: se confirma.
+- Reserva cancelada: no se confirma.
+- Reserva nula: no produce error.
+- Anticipación insuficiente: no se confirma.
+
+### Técnicas aplicadas
+
+- Rename.
+- Constante expresiva.
+- Guard clauses.
+- Extract Method.
+
+### Ejecución
+
+```bash
+mvn clean compile
+mvn exec:java "-Dexec.mainClass=edu.uees.disenosoftware.actividad1.Main"
