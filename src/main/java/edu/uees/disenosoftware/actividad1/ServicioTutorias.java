@@ -8,23 +8,36 @@ public class ServicioTutorias {
             Reserva reserva,
             int horasAnticipacion) {
 
-        if (reserva == null) {
+        if (!esReservaProcesable(
+                reserva,
+                horasAnticipacion)) {
             return;
+        }
+
+        procesarConfirmacion(reserva);
+    }
+
+    private boolean esReservaProcesable(
+            Reserva reserva,
+            int horasAnticipacion) {
+
+        if (reserva == null) {
+            return false;
         }
 
         if (reserva.getEstudiante() == null) {
-            return;
+            return false;
         }
 
         if (reserva.isCancelada()) {
-            return;
+            return false;
         }
 
-        if (horasAnticipacion
-                < HORAS_MINIMAS_CONFIRMACION) {
-            return;
-        }
+        return horasAnticipacion
+                >= HORAS_MINIMAS_CONFIRMACION;
+    }
 
+    private void procesarConfirmacion(Reserva reserva) {
         System.out.println("Procesando " + reserva.getId());
         reserva.confirmar();
         System.out.println("OK");
