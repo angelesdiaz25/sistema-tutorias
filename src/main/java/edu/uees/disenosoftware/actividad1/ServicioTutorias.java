@@ -2,39 +2,27 @@ package edu.uees.disenosoftware.actividad1;
 
 public class ServicioTutorias {
 
-    private static final int HORAS_MINIMAS_CONFIRMACION = 2;
+    private final ValidadorReserva validadorReserva;
+
+    public ServicioTutorias() {
+        this(new ValidadorReserva());
+    }
+
+    ServicioTutorias(ValidadorReserva validadorReserva) {
+        this.validadorReserva = validadorReserva;
+    }
 
     public void confirmarReserva(
             Reserva reserva,
             int horasAnticipacion) {
 
-        if (!esReservaProcesable(
+        if (!validadorReserva.puedeConfirmarse(
                 reserva,
                 horasAnticipacion)) {
             return;
         }
 
         procesarConfirmacion(reserva);
-    }
-
-    private boolean esReservaProcesable(
-            Reserva reserva,
-            int horasAnticipacion) {
-
-        if (reserva == null) {
-            return false;
-        }
-
-        if (reserva.getEstudiante() == null) {
-            return false;
-        }
-
-        if (reserva.isCancelada()) {
-            return false;
-        }
-
-        return horasAnticipacion
-                >= HORAS_MINIMAS_CONFIRMACION;
     }
 
     private void procesarConfirmacion(Reserva reserva) {
