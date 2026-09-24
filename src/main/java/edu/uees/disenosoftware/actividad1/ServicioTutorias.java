@@ -11,19 +11,17 @@ public class ServicioTutorias {
     ServicioTutorias(ValidadorReserva validadorReserva) {
         this.validadorReserva = validadorReserva;
     }
+public void confirmarReserva(Reserva reserva, int horasAnticipacion) {
+    Anticipacion anticipacion = new Anticipacion(horasAnticipacion);
 
-    public void confirmarReserva(
-            Reserva reserva,
-            int horasAnticipacion) {
-
-        if (!validadorReserva.puedeConfirmarse(
-                reserva,
-                horasAnticipacion)) {
-            return;
-        }
-
-        procesarConfirmacion(reserva);
+    if (!validadorReserva.puedeConfirmarse(reserva, anticipacion)) {
+        return;
     }
+
+    procesarConfirmacion(reserva);
+}
+
+
 
     private void procesarConfirmacion(Reserva reserva) {
         System.out.println("Procesando " + reserva.getId());
