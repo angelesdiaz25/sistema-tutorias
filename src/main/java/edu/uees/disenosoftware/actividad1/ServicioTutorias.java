@@ -3,29 +3,33 @@ package edu.uees.disenosoftware.actividad1;
 public class ServicioTutorias {
 
     private final ValidadorReserva validadorReserva;
+    private final ConfirmadorReserva confirmadorReserva;
 
     public ServicioTutorias() {
-        this(new ValidadorReserva());
+        this(new ValidadorReserva(), new ConfirmadorReserva());
     }
 
-    ServicioTutorias(ValidadorReserva validadorReserva) {
+    ServicioTutorias(
+            ValidadorReserva validadorReserva,
+            ConfirmadorReserva confirmadorReserva) {
+
         this.validadorReserva = validadorReserva;
-    }
-public void confirmarReserva(Reserva reserva, int horasAnticipacion) {
-    Anticipacion anticipacion = new Anticipacion(horasAnticipacion);
-
-    if (!validadorReserva.puedeConfirmarse(reserva, anticipacion)) {
-        return;
+        this.confirmadorReserva = confirmadorReserva;
     }
 
-    procesarConfirmacion(reserva);
-}
+    public void confirmarReserva(
+            Reserva reserva,
+            int horasAnticipacion) {
 
+        Anticipacion anticipacion =
+                new Anticipacion(horasAnticipacion);
 
+        if (!validadorReserva.puedeConfirmarse(
+                reserva,
+                anticipacion)) {
+            return;
+        }
 
-    private void procesarConfirmacion(Reserva reserva) {
-        System.out.println("Procesando " + reserva.getId());
-        reserva.confirmar();
-        System.out.println("OK");
+        confirmadorReserva.confirmar(reserva);
     }
 }
